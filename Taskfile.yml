@@ -1,0 +1,61 @@
+# This mirror keeps a copy of GNU's alpha release tree, alpha.gnu.org/gnu, in a Cloudflare
+# R2 bucket. Twice a day, a run compares the listing of ftp.gnu.org with the state that
+# the last run put in the bucket (a list diff).
+#
+# The toolbox and the rsync engine are from katoptra/lib. Its README shows the items that
+# each one supplies. This file includes them below the vars, at v2, with `flatten: true`.
+#
+# The values in this file are for this mirror only:
+#   - SOURCE, HOST and BUCKET identify the mirror.
+#   - CEILING_GB and LIST_FLOOR are the limits for a run.
+#   - INDEX and PAGE_FOOT are for the directory pages.
+#   - CANARY and FRESH_KEY are for the checks at the end of each run. The engine also sends
+#     the FRESH_KEY file to the bucket last.
+#   - NAME and DESC are for the menu.
+#
+# The secrets are the names in op.env. The toolbox gets their values from the vault in
+# 1Password. It gives each value to the image with its name, not on a command line.
+version: '3'
+
+vars:
+  # SOURCE is ftp.gnu.org, the primary site of GNU. A secondary mirror gets a change 1 h or
+  # more after ftp.gnu.org.
+  SOURCE: rsync://ftp.gnu.org/alpha/
+  HOST: gnu-alpha.katoptra.org  # A fork changes this line and the address in PAGE_FOOT.
+  # BUCKET is the name of the bucket. The objects are at its root, and their keys are GNU's
+  # paths.
+  BUCKET: gnu-alpha
+  # If upstream has more than this number of decimal GB, the run stops with an error.
+  # Upstream had approximately 122 GB in October 2026.
+  CEILING_GB: 160
+  # A listing must have more lines than this value, or it is a truncated listing. The tree
+  # has approximately 7,200 files.
+  LIST_FLOOR: 6500
+  # INDEX is the key suffix of the directory pages. The Transform Rule of the zone uses only
+  # this name. If an upstream file has this name, the bucket keeps the page, not the file.
+  INDEX: '{{.HOST}}.directory.index.html'
+  # PAGE_FOOT is the last line of each directory page. In GNU's mirror guidelines, text
+  # must be short and "strictly explanatory". The only link that is permitted is a link for
+  # bug reports. That link is an email address, which must receive mail. The value is one
+  # line: `>-` joins the two lines below with one space.
+  PAGE_FOOT: >-
+    A mirror of https://alpha.gnu.org/gnu/, updated twice a day. Sizes in bytes, times as upstream lists them.
+    Report a problem to <a href="mailto:gnu-alpha@katoptra.org">gnu-alpha@katoptra.org</a>.
+  # CANARY is a file with 2 http:// links. If the zone uses an HTML rewriter, the rewriter
+  # can change these links.
+  CANARY: emacs/.readme.shtml
+  # FRESH_KEY is the file with alpha.gnu.org's clock, in Unix time. If that time is more
+  # than 24 h before the check, the run stops with an error. The engine also sends this file
+  # to the bucket last.
+  FRESH_KEY: mirror-updated-timestamp.txt
+
+includes:
+  toolbox:
+    taskfile: https://raw.githubusercontent.com/katoptra/lib/v2/toolbox.yml
+    flatten: true
+    vars:
+      NAME: gnu-alpha
+      DESC: a twice-daily mirror of alpha.gnu.org/gnu, from {{.SOURCE}}, at https://{{.HOST}}/
+  rsync:
+    taskfile: https://raw.githubusercontent.com/katoptra/lib/v2/engines/rsync.yml
+    flatten: true

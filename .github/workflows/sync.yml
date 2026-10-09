@@ -1,0 +1,19 @@
+name: sync
+on:
+  workflow_dispatch:
+    inputs:
+      vars:
+        description: 'KEY=value pairs for the pipeline, e.g. "RECONCILE=true MAX_BATCHES=8"'
+        type: string
+        default: ''
+permissions:
+  contents: read
+  # The called workflow uses this permission to start the next run of a chain. A called
+  # workflow cannot increase this permission.
+  actions: write
+concurrency: {group: sync, cancel-in-progress: false}
+jobs:
+  sync:
+    uses: katoptra/lib/.github/workflows/sync.yml@36d75e6b21473400b5b15003025d9a2e81d4eeea # v2.6.0
+    with: {vars: '${{ inputs.vars }}'}
+    secrets: inherit
