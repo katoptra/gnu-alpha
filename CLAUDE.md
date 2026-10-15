@@ -7,9 +7,9 @@ use the mirror and how to fork it. The README of [katoptra/lib](https://github.c
 is the manual for the parts that all mirrors share. This file gives the rules that each
 change must obey.
 
-This repository does not start runs. An external scheduler dispatches `sync.yml` at 03:42
-and 15:42 UTC. A run does `reconcile` if it is 23.5 hours or more since a run did the last
-reconcile. This can be the run at 03:42 or the run at 15:42.
+This repository does not start runs. An external scheduler dispatches `sync.yml`. Only the
+scheduler has the times of the runs. A run does `reconcile` if it is 23.5 hours or more since
+a run did the last reconcile.
 
 `Taskfile.yml` contains only the root vars and the two includes, and each verb is lib's.
 
@@ -73,8 +73,8 @@ reconcile. This can be the run at 03:42 or the run at 15:42.
   This mirror does not write a timestamp.
 - **The keyring is in a different tree.** Each release has its `.sig` file in this tree.
   The GNU keyring that verifies them is at the root of `https://gnu.katoptra.org/`.
-- **A run failure is the only alert.** The healthchecks.io check has the cron
-  `42 3,15 * * *` UTC and a grace time of 3 hours.
+- **A run failure is the only alert.** The healthchecks.io check has a cron expression with
+  the same times as the slots of the mirror, in UTC, and a grace time of 3 hours.
 
 ## Verifying a change
 
