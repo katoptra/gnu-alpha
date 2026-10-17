@@ -33,7 +33,7 @@ a run did the last reconcile.
   `rsync://ftp.gnu.org/alpha/`. The alpha list is on GNU's mirror page, in "Mirroring the
   GNU Alpha release server".
 - **Paths are GNU's, at the root of the bucket, with the dot-files.** Only the mirror uses
-  the prefix `.state/` and the file name `gnu-alpha.katoptra.org.directory.index.html`. The
+  the prefix `.state/` and the file name `katoptra.org.directory.index.html`. The
   alpha tree does not have these two names.
 - **GNU's mirror guidelines are applicable to each page that the mirror serves.** Text must
   be "as short as possible, and strictly explanatory". Images and logos are not permitted.
