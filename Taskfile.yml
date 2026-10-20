@@ -8,7 +8,7 @@
 # The values in this file are for this mirror only:
 #   - SOURCE, HOST and BUCKET identify the mirror.
 #   - CEILING_GB and LIST_FLOOR are the limits for a run.
-#   - INDEX and PAGE_FOOT are for the directory pages.
+#   - INDEX and UPSTREAM are for the directory pages.
 #   - CANARY and FRESH_KEY are for the checks at the end of each run. The engine also sends
 #     the FRESH_KEY file to the bucket last.
 #   - NAME and DESC are for the menu.
@@ -21,7 +21,7 @@ vars:
   # SOURCE is ftp.gnu.org, the primary site of GNU. A secondary mirror gets a change 1 h or
   # more after ftp.gnu.org.
   SOURCE: rsync://ftp.gnu.org/alpha/
-  HOST: gnu-alpha.katoptra.org  # A fork changes this line and the address in PAGE_FOOT.
+  HOST: gnu-alpha.katoptra.org  # A fork changes this line.
   # BUCKET is the name of the bucket. The objects are at its root, and their keys are GNU's
   # paths.
   BUCKET: gnu-alpha
@@ -35,13 +35,12 @@ vars:
   # name, and the Transform Rules of the zone use it for their hosts. If an upstream file has
   # this name, the bucket keeps the page, not the file.
   INDEX: katoptra.org.directory.index.html
-  # PAGE_FOOT is the last line of each directory page. In GNU's mirror guidelines, text
-  # must be short and "strictly explanatory". The only link that is permitted is a link for
-  # bug reports. That link is an email address, which must receive mail. The value is one
-  # line: `>-` joins the two lines below with one space.
-  PAGE_FOOT: >-
-    A mirror of https://alpha.gnu.org/gnu/, updated twice a day. Sizes in bytes, times as upstream lists them.
-    Report a problem to <a href="mailto:gnu-alpha@katoptra.org">gnu-alpha@katoptra.org</a>.
+  # UPSTREAM is the URL of this tree on alpha.gnu.org. The footer of each directory page
+  # gives it as text, with the path of the directory. In GNU's mirror guidelines, text must
+  # be short and "strictly explanatory". The only link that is permitted is a link for bug
+  # reports. The engine makes that link from HOST: gnu-alpha@katoptra.org, which must
+  # receive mail.
+  UPSTREAM: https://alpha.gnu.org/gnu/
   # CANARY is a file with 2 http:// links. If the zone uses an HTML rewriter, the rewriter
   # can change these links.
   CANARY: emacs/.readme.shtml

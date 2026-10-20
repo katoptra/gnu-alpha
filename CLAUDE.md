@@ -38,10 +38,9 @@ a run did the last reconcile.
 - **GNU's mirror guidelines are applicable to each page that the mirror serves.** Text must
   be "as short as possible, and strictly explanatory". Images and logos are not permitted.
   The only permitted link is a link for bug reports.
-- **`PAGE_FOOT` is the only text that the mirror adds.** The pages in the bucket show a
-  change to `PAGE_FOOT` only after the engine makes all the pages again. To make all the
-  pages again, run `aws s3 rm s3://gnu-alpha/.state/indexed.txt.xz`. The next run then sends
-  approximately 420 PutObjects.
+- **The footer is the only text that the mirror adds.** The engine makes it from `UPSTREAM`
+  and `HOST`. Do not set `PAGE_FOOT`. A change to `UPSTREAM` or `HOST` gets to each page at
+  the next run. That run sends approximately 430 PutObjects.
 - **The bug-report link is `mailto:gnu-alpha@katoptra.org`.** That address must receive
   e-mail. The mail records of the zone are not in this repository. They are in the same
   location as the zone rules.
